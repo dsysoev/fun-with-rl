@@ -495,7 +495,6 @@ class FruitCollectionMini(FruitCollection):
         self.is_fruit = True
         self.nb_fruits = 4
         self.possible_fruits = [[0, 0], [9, 9], [0, 9], [9, 0]]
-        # self.possible_fruits = [[0, 0]]
         self.scr_w = 10
         self.scr_h = 10
         self.rendering_scale = 50
@@ -521,6 +520,15 @@ class FruitCollectionMini(FruitCollection):
         while True:
             self.player_pos_x, self.player_pos_y = self.rng.randint(0, self.scr_w), self.rng.randint(0, self.scr_h)
             if [self.player_pos_x, self.player_pos_y] not in possible_places:
+            self.ghosts = [{'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [0, 1],
+                            'active': True}]
+        else:
+            self.ghosts = []
+
+    def _reset_targets(self):
+        while True:
+            self.player_pos_x, self.player_pos_y = self.rng.randint(0, self.scr_w), self.rng.randint(0, self.scr_h)
+            if [self.player_pos_x, self.player_pos_y] not in self.possible_fruits:
                 break
         # Targets:  Format: [ {colour: c1, reward: r1, locations: list_l1, 'active': list_a1}, ... ]
         self.fruits = []
