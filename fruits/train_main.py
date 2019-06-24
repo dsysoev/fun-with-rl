@@ -7,8 +7,8 @@ from tabular import ai
 from tabular import experiment
 
 
-env = fruit_collection.FruitCollectionMini(
-    rendering=False, lives=1, game_length=300, image_saving=False)
+env = fruit_collection.FruitCollectionSmall(
+    rendering=False, lives=1, game_length=200, image_saving=False)
 
 agent = ai.SarsaAgent(
         alpha=0.01,
@@ -19,7 +19,7 @@ agent = ai.SarsaAgent(
     )
 
 agent, reward_data = experiment.train(
-    env, agent, max_gamestep=200, num_games=1000, rolling_stats=100, verbose=True)
+    env, agent, max_gamestep=200, num_games=1000000, rolling_stats=10000, verbose=True)
 
 df_reward = pd.Series(reward_data).to_frame()
 df_reward.columns = ['reward']

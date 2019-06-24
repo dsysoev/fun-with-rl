@@ -442,9 +442,7 @@ class FruitCollection(object):
 
 class FruitCollectionSmall(FruitCollection):
     def init_with_mode(self):
-
-        self.is_fruit = True
-        self.nb_fruits = 1
+        self.nb_fruits = None
         self.scr_w = 11
         self.scr_h = 11
         self.rendering_scale = 40
@@ -465,31 +463,29 @@ class FruitCollectionSmall(FruitCollection):
             self.ghosts = []
 
     def _reset_targets(self):
-        if self.is_ghost and not self.is_fruit:
-            if self.rng.binomial(1, 0.5):
-                self.ghosts = [{'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [0, 5],
-                                'active': True}]
-            else:
-                self.ghosts = [{'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [4, 5],
-                                'active': True}]
-        [self.player_pos_x, self.player_pos_y] = deepcopy([self.scr_w - 1, self.scr_h - 1])
+        while True:
+            self.player_pos_x, self.player_pos_y = self.rng.randint(0, self.scr_w - 1), self.rng.randint(0, self.scr_h - 1)
+            if [self.player_pos_x, self.player_pos_y] not in self.walls:
+                break
+
+        possible_places = self.walls + [[self.player_pos_x, self.player_pos_y]]
+        self.ghosts = []
+        while len(self.ghosts) < 3:
+            pos_x, pos_y = self.rng.randint(0, self.scr_w - 1), self.rng.randint(0, self.scr_h - 1)
+            if [pos_x, pos_y] not in possible_places:
+                self.ghosts.append({'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [pos_x, pos_y],
+                                'active': True})
         # Targets:  Format: [ {colour: c1, reward: r1, locations: list_l1, 'active': list_a1}, ... ]
         occupied = self.walls + [[self.player_pos_x, self.player_pos_y]]
         self.fruits = []
-        self.active_fruits = [[0, 0]]
-        # if self.is_fruit:
-        #     for x in range(self.scr_w):
-        #         for y in range(self.scr_h):
-        #             if [x, y] not in occupied:
-        #                 if self.rng.binomial(1, 0.5):
-        #                     self.fruits.append({'colour': BLUE, 'reward': self.reward_scheme['fruit'],
-        #                                         'location': [x, y], 'active': True})
-        #                     self.active_fruits.append(True)
-        #                 else:
-        #                     self.fruits.append({'colour': BLUE, 'reward': self.reward_scheme['fruit'],
-        #                                         'location': [x, y], 'active': False})
-        #                     self.active_fruits.append(False)
-        #     self.nb_fruits = len(self.fruits)
+        self.active_fruits = []
+        self.fruits.append({'colour': BLUE, 'reward': self.reward_scheme['fruit'],
+                            'location': [0, 0], 'active': True})
+        self.active_fruits.append(True)
+        self.fruits.append({'colour': BLUE, 'reward': self.reward_scheme['fruit'],
+                            'location': [10, 10], 'active': True})
+        self.active_fruits.append(True)
+        self.nb_fruits = len(self.fruits)
 
 
 class FruitCollectionMini(FruitCollection):
