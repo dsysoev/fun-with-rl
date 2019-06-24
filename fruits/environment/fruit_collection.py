@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 from copy import deepcopy
 import pygame
@@ -494,7 +497,7 @@ class FruitCollectionMini(FruitCollection):
         self.is_ghost = True
         self.is_fruit = True
         self.nb_fruits = 4
-        self.possible_fruits = [[0, 0], [9, 9], [0, 9], [9, 0]]
+        self.possible_fruits = [[0, 0], [9, 9]]
         self.scr_w = 10
         self.scr_h = 10
         self.rendering_scale = 50
@@ -520,8 +523,8 @@ class FruitCollectionMini(FruitCollection):
         while True:
             self.player_pos_x, self.player_pos_y = self.rng.randint(0, self.scr_w), self.rng.randint(0, self.scr_h)
             if [self.player_pos_x, self.player_pos_y] not in possible_places:
-            self.ghosts = [{'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [0, 1],
-                            'active': True}]
+                self.ghosts = [{'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [0, 1],
+                                'active': True}]
         else:
             self.ghosts = []
 
@@ -652,7 +655,7 @@ def test(mode, fruit, ghost, save, rng, verbose=False):
             env.render()
 
         if verbose:
-            print("\033[2J\033[H\033[2J", end="")
+            # print("\033[2J\033[H\033[2J", end="")
             print()
             print('pos: ', env.player_pos_x, env.player_pos_y)
             print('reward: ', r)
@@ -707,7 +710,7 @@ def test_agent(mode, fruit, ghost, save, agent, rng, verbose=False):
             env.render()
 
         if verbose:
-            print("\033[2J\033[H\033[2J", end="")
+            # print("\033[2J\033[H\033[2J", end="")
             print()
             print('pos: ', env.player_pos_x, env.player_pos_y)
             print('reward: ', r)

@@ -1,4 +1,7 @@
 
+import os
+import glob
+import pickle
 import numpy as np
 
 from environment import fruit_collection
@@ -82,3 +85,29 @@ def train(env, agent, max_gamestep, num_games, rolling_stats=100, verbose=False)
             ))
 
     return agent, rewards_list
+
+
+def save_results(agent, data, exp_type='main', root_folder='results'):
+
+    if not os.path.isdir(root_folder):
+        os.mkdir(root_folder)
+
+    experiments = sorted(glob.glob('./{}/experiment_*'.format(root_folder)))
+
+    if not experiments:
+        name = 'experiment_{}_0'.format(exp_type)
+    else:
+        *n, it = experiments[-1].split('_')
+        name = "{}_{}".format("_".join(n), int(it) + 1)
+
+    if not os.path.isdir(name):
+        os.mkdir(name)
+
+    agent_path = "{}/agent.pkl".format(name)
+    with open(agent_path, 'wb') as f:
+        pickle.dump(agent, f, pickle.HIGHEST_PROTOCOL)
+    print("agent was saved ({})".format(agent_path))
+
+    data_path = '{}/data.csv'.format(name)
+    data.to_csv(data_path)
+    print("score data saved ({})".format(data_path))
