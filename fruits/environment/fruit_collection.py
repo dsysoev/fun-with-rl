@@ -470,7 +470,7 @@ class FruitCollectionSmall(FruitCollection):
 
         possible_places = self.walls + [[self.player_pos_x, self.player_pos_y]]
         self.ghosts = []
-        while len(self.ghosts) < 3:
+        while len(self.ghosts) < 2:
             pos_x, pos_y = self.rng.randint(0, self.scr_w - 1), self.rng.randint(0, self.scr_h - 1)
             if [pos_x, pos_y] not in possible_places:
                 self.ghosts.append({'colour': RED, 'reward': self.reward_scheme['ghost'], 'location': [pos_x, pos_y],
@@ -719,7 +719,7 @@ def test_agent(mode, fruit, ghost, save, agent, rng, verbose=False):
 def create_state(source_fruits, fruits, ghost, agent):
 
     num_fruits = len(source_fruits)
-    state = [[10, 10] for _ in range(num_fruits)]
+    state = [[11, 11] for _ in range(num_fruits)]
 
     for elem in fruits:
         indx = source_fruits.index(elem)

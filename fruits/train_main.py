@@ -19,7 +19,7 @@ agent = ai.SarsaAgent(
     )
 
 agent, reward_data = experiment.train(
-    env, agent, max_gamestep=200, num_games=1000000, rolling_stats=10000, verbose=True)
+    env, agent, max_gamestep=200, num_games=3000000, rolling_stats=10000, verbose=True)
 
 df_reward = pd.Series(reward_data).to_frame()
 df_reward.columns = ['reward']
