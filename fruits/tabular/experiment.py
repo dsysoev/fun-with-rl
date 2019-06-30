@@ -66,9 +66,13 @@ def play_and_train(env, agent, t_max=300):
     return total_reward
 
 
-def train(env, agent, max_gamestep, num_games, rolling_stats=100, verbose=False):
+def train(env, agent, max_gamestep, num_games, rolling_stats=100, learning_strategy='linear', verbose=False):
 
-    epsilon_list = np.linspace(1, 0, num_games)
+    if learning_strategy == 'linear':
+        epsilon_list = np.linspace(1, 0, num_games)
+    else:
+        epsilon_list = np.linspace(1, 0.2, num_games // 2) + \
+            np.linspace(0.2, 0, num_games // 2)
 
     rewards_list = []
     for i, epsilon in enumerate(epsilon_list):
